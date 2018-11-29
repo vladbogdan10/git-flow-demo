@@ -46,7 +46,7 @@ this.release = (env) => {
                     // executes webpack binary in prod mode
                     // with environment variables that will be used by the config file
                     // shell.exec('webpack -p --config webpack.' + env.project + '.config.js --env.prod --env.version=' + res.version);
-                    shell.exec(`git tag ${res.version} && git push --tags && git commit -am "latest version" && git push origin master`);
+                    shell.exec(`git commit -am "latest version" && git tag ${res.version} && git push --all --follow-tags`);
                 });
         } else {
             console.log('Please update chip dependencies with "npm update" before continuing!\n');
