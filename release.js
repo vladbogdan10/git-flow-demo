@@ -49,14 +49,14 @@ this.release = (env) => {
                     // shell.exec(`git commit -am "latest version" && git tag ${res.version} && git push --all --follow-tags`);
                     let demoBranch = 'demo-feature-branch';
                     let comment = 'dummy comment';
-                    let gitTag = '1.0.24'
+                    
                     shell.exec(`git flow feature start ${demoBranch}`);
                     shell.exec(`git commit -am "${comment}"`);
                     shell.exec(`git push --set-upstream origin feature/${demoBranch}`);
                     shell.exec(`git flow feature finish ${demoBranch}`);
                     shell.exec('git push');
-                    shell.exec(`git flow release start ${gitTag}`);
-                    shell.exec(`git flow release finish ${gitTag}`);
+                    shell.exec(`git flow release start ${res.version}`);
+                    shell.exec(`git flow release finish ${res.version}`);
                     shell.exec('git push --all --follow-tags');
                 });
         } else {
