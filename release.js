@@ -56,7 +56,7 @@ this.release = (env) => {
                     shell.exec(`git flow feature finish ${demoBranch}`);
                     shell.exec('git push');
                     shell.exec(`git flow release start ${res.version}`);
-                    shell.exec(`git flow release finish ${res.version}`);
+                    shell.exec(`git flow release finish -m "cool-message" ${res.version}`);
                     shell.exec('git push --all --follow-tags');
                 });
         } else {
