@@ -40,7 +40,7 @@ this.release = (env) => {
                         console.log(`sweet! package.json will be updated with the new version: ${res.version}`);
                         pck.version = res.version;
                         fs.writeFileSync(path.join('.', 'package.json'), JSON.stringify(pck, null, 2));
-                        console.log(`the git tag: ${res.version} will be automagically push to the remote repository.`);
+                        // console.log(`the git tag: ${res.version} will be automagically push to the remote repository.`);
                     }
 
                     // executes webpack binary in prod mode
