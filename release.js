@@ -52,7 +52,7 @@ this.release = (env) => {
                     let gitTag = '1.0.24'
                     shell.exec(`git flow feature start ${demoBranch}`);
                     shell.exec(`git commit -am "${comment}"`);
-                    shell.exec(`git git push --set-upstream origin feature/${demoBranch}`);
+                    shell.exec(`git push --set-upstream origin feature/${demoBranch}`);
                     shell.exec(`git flow feature finish ${demoBranch}`);
                     shell.exec('git push');
                     shell.exec(`git flow release start ${gitTag}`);
