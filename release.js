@@ -47,7 +47,7 @@ this.release = (env) => {
                     // with environment variables that will be used by the config file
                     // shell.exec('webpack -p --config webpack.' + env.project + '.config.js --env.prod --env.version=' + res.version);
                     // shell.exec(`git commit -am "latest version" && git tag ${res.version} && git push --all --follow-tags`);
-                    let demoBranch = 'demo-feature-branch-1';
+                    let demoBranch = 'demo-feature-branch-2';
                     let comment = 'dummy comment';
                     
                     shell.exec(`git flow feature start ${demoBranch}`);
