@@ -9,23 +9,6 @@ const fs = require('fs'),
       releaseConfig = require('./release.js'),
       argv = require('yargs').argv;
 
-git.isGit(__dirname, function (exists) {
-    if (!exists) return
-    
-    git.check(__dirname, function (err, result) {
-        if (err) console.log(err);
-        if (result.branch == 'master') {
-            console.log(`===> You are on ${result['branch'].toUpperCase()} branch. Please switch branch.`);
-            return;
-        } 
-        if (result.dirty > 0) {
-            console.log(`===> You have ${result.dirty} uncommitted changes. Please commit your changes first`);
-            return;
-        }
-        release(argv.env);
-    })
-})
-
 
 const release = (env) => {
     // ask users to check chip dependencies are updated
@@ -83,3 +66,21 @@ const release = (env) => {
         }
     });
 };
+
+git.isGit(__dirname, function (exists) {
+    if (!exists) return
+    
+    git.check(__dirname, function (err, result) {
+        if (err) console.log(err);
+        
+        if (result.branch == 'master') {
+            console.log(`===> You are on ${result['branch'].toUpperCase()} branch. Please switch branch.`);
+            return;
+        } 
+        if (result.dirty > 0) {
+            console.log(`===> You have ${result.dirty} uncommitted changes. Please commit your changes first`);
+            return;
+        }
+        release(argv.env);
+    })
+})
