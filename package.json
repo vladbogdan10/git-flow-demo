@@ -11,15 +11,15 @@
     "url": "git+https://github.com/vladbogdan10/git-flow-demo.git"
   },
   "author": "Vlad B",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/vladbogdan10/git-flow-demo/issues"
   },
   "homepage": "https://github.com/vladbogdan10/git-flow-demo#readme",
-  "dependencies": {
-    "git-tags-remote": "^1.0.1"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "git-state": "^4.1.0",
+    "git-tags-remote": "^1.0.1",
     "prompt": "^1.0.0",
     "semver": "^5.6.0",
     "shelljs": "^0.8.3",
