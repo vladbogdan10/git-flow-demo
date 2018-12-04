@@ -9,6 +9,24 @@ const fs = require('fs'),
       argv = require('yargs').argv;
 
 
+git.isGit(__dirname, (exists) => {
+    if (!exists) return
+    
+    git.check(__dirname, (err, result) => {
+        if (err) console.log(err);
+        
+        if (result.branch == 'master') {
+            console.log(`===> You are on ${result['branch'].toUpperCase()} branch. Please switch branch.`);
+            return;
+        } 
+        if (result.dirty > 0) {
+            console.log(`===> You have ${result.dirty} uncommitted changes. Please commit your changes first.`);
+            return;
+        }
+        release(argv.env);
+    })
+});
+
 const lsRemoteTags = () => {
     const gitTags = shell.exec(`git ls-remote --tags https://github.com/vladbogdan10/git-flow-demo.git`, {silent:true}).stdout;
     tags = gitTags.toString().trim()
@@ -29,24 +47,6 @@ const parseTags = tags => {
         .sort((a, b) => semver.compare(a[0], b[0]))
         .reverse());
 };
-
-git.isGit(__dirname, (exists) => {
-    if (!exists) return
-    
-    git.check(__dirname, (err, result) => {
-        if (err) console.log(err);
-        
-        if (result.branch == 'master') {
-            console.log(`===> You are on ${result['branch'].toUpperCase()} branch. Please switch branch.`);
-            return;
-        } 
-        if (result.dirty > 0) {
-            console.log(`===> You have ${result.dirty} uncommitted changes. Please commit your changes first.`);
-            return;
-        }
-        release(argv.env);
-    })
-});
 
 const release = (env) => {
     // ask users to check chip dependencies are updated
