@@ -16,7 +16,7 @@ git.isGit(__dirname, (exists) => {
         if (err) console.log(err);
         
         if (result.branch == 'master') {
-            console.log(`===> You are on ${result['branch'].toUpperCase()} branch. Please switch branch.`);
+            console.log(`===> You are on ${result['branch'].toUpperCase()} branch. Please switch to develop or feature branch in order to continue.`);
             return;
         } 
         if (result.dirty > 0) {
@@ -28,11 +28,18 @@ git.isGit(__dirname, (exists) => {
 });
 
 const lsRemoteTags = () => {
-    const gitTags = shell.exec(`git ls-remote --tags https://github.com/vladbogdan10/git-flow-demo.git`, {silent:true}).stdout;
-    tags = gitTags.toString().trim()
-    parsedTags = parseTags(tags);
-    latesGitTag =  parsedTags.entries().next().value;
-    return latesGitTag[0];
+    const gitTags = shell.exec(`git ls-remote --tags https://github.com/vladbogdan10/git-flow-demo.git`, {silent:true});
+	error = gitTags.stderr;
+	if (error) {
+		console.log(`There was a problem getting the git version from ${error}`);
+		return;
+	}
+	output = gitTags.stdout;
+	strTags = output.toString().trim()
+	parsedTags = parseTags(strTags);
+	latesGitTag =  parsedTags.entries().next().value;
+	 
+ 	return latesGitTag[0];
 };
 
 const parseTags = tags => {
@@ -90,7 +97,10 @@ const release = (env) => {
                     console.log('In the meantime the git tag was already taken. Please start the process again!');
                     return;
                 }
-                console.log('check branch');
+                shell.exec(`git flow release start ${res.version}`);
+                shell.exec('git commit -am "version bumped"');
+                shell.exec(`git flow release finish -m "release" ${res.version}`);
+                shell.exec('git push --all --follow-tags');
             });
         } else {
             console.log('Please update chip dependencies with "npm update" before continuing!\n');
