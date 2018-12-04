@@ -99,7 +99,7 @@ const release = (env) => {
                 }
                 shell.exec(`git flow release start ${res.version}`);
                 shell.exec('git commit -am "version bumped"');
-                shell.exec(`git flow release finish -m "release/${res.version}" ${res.version}`);
+                shell.exec(`git flow release finish -m "release" ${res.version}`);
                 shell.exec('git push --all --follow-tags');
             });
         } else {
