@@ -21,7 +21,7 @@ git.isGit(__dirname, (exists) => {
         } 
         if (result.dirty > 0) {
             console.log(`===> You have ${result.dirty} uncommitted changes. Please commit your changes first.`);
-            // return;
+            return;
         }
         release(argv.env);
     })
@@ -66,6 +66,7 @@ const release = (env) => {
         required: true
     }], (err, res) => {
         if (res.updated === 'y') {
+            shell.exec(`git flow release start ${res.version}`);
             // console.info('Creating', argv.env.project ,'Release Build...');
             console.log(`Current version: ${lsRemoteTags()}`);
             console.log('Please give a new version number');
@@ -76,7 +77,6 @@ const release = (env) => {
                 description: 'new version',
                 required: true
             }], (err, res) => {
-                shell.exec(`git flow release start ${res.version}`);
                     // makes sure version complies to semver
                 if (!semver.valid(res.version)) {
                     console.log('this version number does not comply to semver format.');
