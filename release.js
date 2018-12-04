@@ -66,7 +66,6 @@ const release = (env) => {
         required: true
     }], (err, res) => {
         if (res.updated === 'y') {
-            shell.exec(`git flow release start ${res.version}`);
             // console.info('Creating', argv.env.project ,'Release Build...');
             console.log(`Current version: ${lsRemoteTags()}`);
             console.log('Please give a new version number');
