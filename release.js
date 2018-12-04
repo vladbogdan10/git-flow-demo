@@ -103,7 +103,7 @@ const release = (env) => {
                 shell.exec('git commit -am "version bumped"');
                 
                 shell.exec(`git flow release finish -m "release" ${res.version}`);
-                shell.exec('git push');
+                shell.exec('git push origin master');
                 shell.exec('git push --tags');
             });
         } else {
