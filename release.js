@@ -81,6 +81,7 @@ const release = (env) => {
                     console.log('this version number does not comply to semver format.');
                     console.log('package.json will not be updated.');
                 } else {
+                    shell.exec(`git flow release start ${res.version}`);
                     // updates package.json
                     console.log(`sweet! package.json will be updated with the new version: ${res.version}`);
                     pck.version = res.version;
@@ -98,7 +99,7 @@ const release = (env) => {
                     return;
                 }
                 shell.exec('git commit -am "version bumped"');
-                shell.exec(`git flow release start ${res.version}`);
+                // shell.exec(`git flow release start ${res.version}`);
                 // console.log('commiting package.json and version.js');
                 
                 shell.exec(`git flow release finish -m "release" ${res.version}`);
