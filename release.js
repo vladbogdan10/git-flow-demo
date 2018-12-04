@@ -81,6 +81,8 @@ const release = (env) => {
                     console.log('this version number does not comply to semver format.');
                     console.log('package.json will not be updated.');
                 } else {
+                    shell.exec('git pull');
+                    shell.exec(`git flow release start ${res.version}`);
                     // updates package.json
                     console.log(`sweet! package.json will be updated with the new version: ${res.version}`);
                     pck.version = res.version;
@@ -90,7 +92,7 @@ const release = (env) => {
                 // executes webpack binary in prod mode
                 // with environment variables that will be used by the config file
                 // shell.exec('webpack -p --config webpack.' + env.project + '.config.js --env.prod --env.version=' + res.version);
-                shell.exec('git pull');
+                
 
                 console.log('...Building files...');
                 if (lsRemoteTags() == res.version) {
@@ -99,7 +101,7 @@ const release = (env) => {
                 }
                 
                 shell.exec('git commit -am "version bumped"');
-                shell.exec(`git flow release start ${res.version}`);
+                
                 shell.exec(`git flow release finish -m "release" ${res.version}`);
                 shell.exec('git push --all --follow-tags');
             });
