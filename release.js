@@ -103,7 +103,7 @@ const release = (env) => {
                 shell.exec('git commit -am "version bumped"');
                 
                 shell.exec(`git flow release finish -m "release" ${res.version}`);
-                shell.exec('git push --all --follow-tags');
+                shell.exec('git push', 'git push --tags');
             });
         } else {
             console.log('Please update chip dependencies with "npm update" before continuing!\n');
