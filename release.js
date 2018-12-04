@@ -82,6 +82,7 @@ const release = (env) => {
                     console.log('this version number does not comply to semver format.');
                     console.log('package.json will not be updated.');
                 } else {
+                    shell.exec(`git flow release start ${res.version}`);
                     // updates package.json
                     console.log(`sweet! package.json will be updated with the new version: ${res.version}`);
                     pck.version = res.version;
