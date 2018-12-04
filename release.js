@@ -91,15 +91,15 @@ const release = (env) => {
                 // with environment variables that will be used by the config file
                 // shell.exec('webpack -p --config webpack.' + env.project + '.config.js --env.prod --env.version=' + res.version);
                 shell.exec('git pull');
-                
+
                 console.log('...Building files...');
                 if (lsRemoteTags() == res.version) {
                     console.log('In the meantime the git tag was already taken. Please start the process again!');
                     return;
                 }
                 
-                shell.exec(`git flow release start ${res.version}`);
                 shell.exec('git commit -am "version bumped"');
+                shell.exec(`git flow release start ${res.version}`);
                 shell.exec(`git flow release finish -m "release" ${res.version}`);
                 shell.exec('git push --all --follow-tags');
             });
