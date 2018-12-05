@@ -72,7 +72,7 @@ const release = (env) => {
     }], (err, res) => {
         if (res.updated === 'y') {
             // console.info('Creating', argv.env.project ,'Release Build...');
-            console.log(`Current version: ${lsRemoteTags()}`.cyan);
+            console.log(`Current version:` `${lsRemoteTags()}`.cyan);
             console.log('Please give a new version number'.cyan);
 
             // prompts for a new version number
