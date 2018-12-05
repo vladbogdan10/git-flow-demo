@@ -5,6 +5,7 @@ const fs = require('fs'),
       semver = require('semver'),
       pck = require('./package.json'),
       git = require('git-state'),
+      colors = require('colors'),
       releaseConfig = require('./release.js'),
       argv = require('yargs').argv;
 
@@ -16,11 +17,11 @@ git.isGit(__dirname, (exists) => {
         if (err) console.log(err);
         
         if (result.branch == 'master') {
-            console.log(`===> You are on ${result['branch'].toUpperCase()} branch. Please switch to develop or feature branch in order to continue.`);
+            console.log(`You are on ${result['branch'].toUpperCase()} branch. Please switch to develop or feature branch in order to continue.`.black.bgWhite);
             return;
         } 
         if (result.dirty > 0) {
-            console.log(`===> You have ${result.dirty} uncommitted changes. Please commit your changes first.`);
+            console.log(`You have ${result.dirty} uncommitted changes. Please commit your changes first.`.black.bgWhite);
             return;
         }
         if (result['branch'].includes('feature/')) {
@@ -35,7 +36,7 @@ const lsRemoteTags = () => {
     const gitTags = shell.exec(`git ls-remote --tags https://github.com/vladbogdan10/git-flow-demo.git`, {silent:true});
 	error = gitTags.stderr;
 	if (error) {
-		console.log(`There was a problem getting the git version from ${error}`);
+		console.log(`There was a problem getting the git version from ${error}`.black.bgRed);
 		return;
 	}
 	output = gitTags.stdout;
@@ -62,7 +63,7 @@ const parseTags = tags => {
 const release = (env) => {
     // ask users to check chip dependencies are updated
     console.log('IMPORTANT');
-    console.log('Did you remember to run "npm update" to update chip dependencies?\n');
+    console.log('Did you remember to run "npm update" to update chip dependencies?\n'.black.bgYellow);
 
     prompt.get([{
         name: 'updated',
@@ -71,8 +72,8 @@ const release = (env) => {
     }], (err, res) => {
         if (res.updated === 'y') {
             // console.info('Creating', argv.env.project ,'Release Build...');
-            console.log(`Current version: ${lsRemoteTags()}`);
-            console.log('Please give a new version number');
+            console.log(`Current version: ${lsRemoteTags()}`.cyan);
+            console.log('Please give a new version number'.cyan);
 
             // prompts for a new version number
             prompt.get([{
@@ -82,8 +83,8 @@ const release = (env) => {
             }], (err, res) => {
                     // makes sure version complies to semver
                 if (!semver.valid(res.version)) {
-                    console.log('this version number does not comply to semver format.');
-                    console.log('package.json will not be updated.');
+                    console.log('this version number does not comply to semver format.'.red);
+                    console.log('package.json will not be updated.'.red);
                 } else {
                     const gitPull = shell.exec('git pull');
                     if (gitPull.code == 1) return;
@@ -101,12 +102,14 @@ const release = (env) => {
                     console.log('Building files...');
                 }
                 if (lsRemoteTags() == res.version) {
-                    console.log('In the meantime the git tag was already taken. Please start the process again!');
+                    console.log('In the meantime the git tag was already taken. Please start the process again!'.black.bgRed);
                     return;
                 }
                 shell.exec('git commit -am "version bumped"');
                 shell.exec(`git flow release finish -m "release" ${res.version}`);
                 shell.exec('git push --all --follow-tags');
+
+                console.log('Successful! and ...yay?'.black.bgGreen);
             });
         } else {
             console.log('Please update chip dependencies with "npm update" before continuing!\n');
