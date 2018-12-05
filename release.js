@@ -5,6 +5,7 @@ const fs = require('fs'),
       semver = require('semver'),
       pck = require('./package.json'),
       git = require('git-state'),
+      colors = require('colors'),
       releaseConfig = require('./release.js'),
       argv = require('yargs').argv;
 
@@ -16,7 +17,7 @@ git.isGit(__dirname, (exists) => {
         if (err) console.log(err);
         
         if (result.branch == 'master') {
-            console.log(`===> You are on ${result['branch'].toUpperCase()} branch. Please switch to develop or feature branch in order to continue.`);
+            console.log(`You are on ${result['branch'].toUpperCase()} branch. Please switch to develop or feature branch in order to continue.`.bgWhite);
             return;
         } 
         if (result.dirty > 0) {
