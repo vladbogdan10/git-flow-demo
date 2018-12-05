@@ -110,6 +110,7 @@ const release = (env) => {
                 const release = shell.exec(`git flow release finish -m "release" ${res.version}`);
                 console.log('release', release.code);
                 const pushAll = shell.exec('git push --all');
+                if (pushAll.code == 1) return;
                 console.log('push all', pushAll.code);
                 const pushTag = shell.exec('git push --tags');
                 console.log('push tag', pushTag.code);
