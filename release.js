@@ -21,13 +21,13 @@ git.isGit(__dirname, (exists) => {
         } 
         if (result.dirty > 0) {
             console.log(`===> You have ${result.dirty} uncommitted changes. Please commit your changes first.`);
-            // return;
+            return;
         }
         if (result['branch'].includes('feature/')) {
             const featureBranch = result['branch'].match(/\/(.*)/);
             shell.exec(`git flow feature finish ${featureBranch[1]}`);
         }
-        // release(argv.env);
+        release(argv.env);
     })
 });
 
