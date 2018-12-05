@@ -97,7 +97,7 @@ const release = (env) => {
                 // with environment variables that will be used by the config file
                 // shell.exec('webpack -p --config webpack.' + env.project + '.config.js --env.prod --env.version=' + res.version);
                 
-                for (let i = 0; i <= 10; i++) {
+                for (let i = 0; i <= 50; i++) {
                     console.log('Building files...');
                 }
                 if (lsRemoteTags() == res.version) {
