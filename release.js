@@ -21,13 +21,13 @@ git.isGit(__dirname, (exists) => {
         } 
         if (result.dirty > 0) {
             console.log(`===> You have ${result.dirty} uncommitted changes. Please commit your changes first.`);
-            return;
+            // return;
         }
         if (result['branch'].includes('feature/')) {
             const featureBranch = result['branch'].match(/\/(.*)/);
             shell.exec(`git flow feature finish ${featureBranch[1]}`);
         }
-        release(argv.env);
+        // release(argv.env);
     })
 });
 
@@ -85,7 +85,8 @@ const release = (env) => {
                     console.log('this version number does not comply to semver format.');
                     console.log('package.json will not be updated.');
                 } else {
-                    shell.exec('git pull');
+                    const gitPull = shell.exec('git pull');
+                    if (gitPull.code == 1) return;
                     shell.exec(`git flow release start ${res.version}`);
                     // updates package.json
                     console.log(`sweet! package.json will be updated with the new version: ${res.version}`);
@@ -106,8 +107,10 @@ const release = (env) => {
                 
                 shell.exec('git commit -am "version bumped"');
                 
-                shell.exec(`git flow release finish -m "release" ${res.version}`);
-                shell.exec('git push --all --follow-tags');
+                const release = shell.exec(`git flow release finish -m "release" ${res.version}`);
+                console.log(release.code);
+                const pushAll = shell.exec('git push --all --follow-tags');
+                console.log(pushAll.code);
             });
         } else {
             console.log('Please update chip dependencies with "npm update" before continuing!\n');
