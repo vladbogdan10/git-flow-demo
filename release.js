@@ -73,7 +73,7 @@ const release = (env) => {
         if (res.updated === 'y') {
             // console.info('Creating', argv.env.project ,'Release Build...');
             console.log(`Current version: ${lsRemoteTags()}`.cyan);
-            console.log('Please provide a new version number!'.cyan);
+            console.log('Please give a new version number'.cyan);
 
             // prompts for a new version number
             prompt.get([{
@@ -83,8 +83,8 @@ const release = (env) => {
             }], (err, res) => {
                     // makes sure version complies to semver
                 if (!semver.valid(res.version)) {
-                    console.log('this version number does not comply to semver format.');
-                    console.log('package.json will not be updated.');
+                    console.log('this version number does not comply to semver format.'.red);
+                    console.log('package.json will not be updated.'.red);
                 } else {
                     const gitPull = shell.exec('git pull');
                     if (gitPull.code == 1) return;
@@ -102,12 +102,14 @@ const release = (env) => {
                     console.log('Building files...');
                 }
                 if (lsRemoteTags() == res.version) {
-                    console.log('In the meantime the git tag was already taken. Please start the process again!');
+                    console.log('In the meantime the git tag was already taken. Please start the process again!'.black.bgRed);
                     return;
                 }
                 shell.exec('git commit -am "version bumped"');
                 shell.exec(`git flow release finish -m "release" ${res.version}`);
                 shell.exec('git push --all --follow-tags');
+
+                console.log('Successful! and ...yay?'.black.bgGreen);
             });
         } else {
             console.log('Please update chip dependencies with "npm update" before continuing!\n');
