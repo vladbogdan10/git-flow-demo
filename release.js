@@ -17,11 +17,11 @@ git.isGit(__dirname, (exists) => {
         if (err) console.log(err);
         
         if (result.branch == 'master') {
-            console.log(`You are on ${result['branch'].toUpperCase()} branch. Please switch to develop or feature branch in order to continue.`.bgWhite);
+            console.log(`You are on ${result['branch'].toUpperCase()} branch. Please switch to develop or feature branch in order to continue.`.black.bgWhite);
             return;
         } 
         if (result.dirty > 0) {
-            console.log(`===> You have ${result.dirty} uncommitted changes. Please commit your changes first.`);
+            console.log(` You have ${result.dirty} uncommitted changes. Please commit your changes first. `.black.bgWhite);
             return;
         }
         if (result['branch'].includes('feature/')) {
@@ -63,7 +63,7 @@ const parseTags = tags => {
 const release = (env) => {
     // ask users to check chip dependencies are updated
     console.log('IMPORTANT');
-    console.log('Did you remember to run "npm update" to update chip dependencies?\n');
+    console.log('Did you remember to run "npm update" to update chip dependencies?\n'.bgYellow);
 
     prompt.get([{
         name: 'updated',
