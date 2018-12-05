@@ -118,4 +118,8 @@ const release = (env) => {
 const gitPull = shell.exec('git pull');
 console.log(gitPull.code);
 console.log(gitPull.stderr);
-console.log(gitPull.stdout);
+if (gitPull.code == 1) {
+    return
+}
+console.log('after error');
+
