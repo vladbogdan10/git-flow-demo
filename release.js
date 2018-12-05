@@ -87,7 +87,6 @@ const release = (env) => {
                 } else {
                     const gitPull = shell.exec('git pull');
                     if (gitPull.code == 1) return;
-
                     shell.exec(`git flow release start ${res.version}`);
                     // updates package.json
                     console.log(`sweet! package.json will be updated with the new version: ${res.version}`);
@@ -108,15 +107,13 @@ const release = (env) => {
                 
                 shell.exec('git commit -am "version bumped"');
                 
-                shell.exec(`git flow release finish -m "release" ${res.version}`);
-                shell.exec('git push --all --follow-tags');
+                const release = shell.exec(`git flow release finish -m "release" ${res.version}`);
+                console.log(release.code);
+                const pushAll = shell.exec('git push --all --follow-tags');
+                console.log(pushAll.code);
             });
         } else {
             console.log('Please update chip dependencies with "npm update" before continuing!\n');
         }
     });
 };
-
-const gitPull = shell.exec('git pull');
-if (gitPull.code == 1) return;
-console.log('after conflict');
