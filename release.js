@@ -89,7 +89,7 @@ const release = (env) => {
                     if (gitPull.code == 1) return;
                     shell.exec(`git flow release start ${res.version}`);
                     // updates package.json
-                    console.log(`sweet! package.json will be updated with the new version: ${res.version}`);
+                    // console.log(`sweet! package.json will be updated with the new version: ${res.version}`);
                     pck.version = res.version;
                     fs.writeFileSync(path.join('.', 'package.json'), JSON.stringify(pck, null, 2));
                 }
