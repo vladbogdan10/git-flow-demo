@@ -112,7 +112,7 @@ const release = (env) => {
                 console.log('Successful! Now let\'s hope you didn\'t brake anything :)'.black.bgGreen);
             });
         } else {
-            console.log('Please update chip dependencies with "npm update" before continuing!\n'.bgMagenta);
+            console.log('Please update chip dependencies with "npm update" before continuing!\n'.black.bgMagenta);
         }
     });
 };
