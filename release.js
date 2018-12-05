@@ -27,7 +27,6 @@ git.isGit(__dirname, (exists) => {
             const featureBranch = result['branch'].match(/\/(.*)/);
             shell.exec(`git flow feature finish ${featureBranch[1]}`);
         }
-        shell.exec('git pull');
         release(argv.env);
     })
 });
