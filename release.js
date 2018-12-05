@@ -13,7 +13,6 @@ git.isGit(__dirname, (exists) => {
     if (!exists) return
     
     git.check(__dirname, (err, result) => {
-        console.log(result);
         if (err) console.log(err);
         
         if (result.branch == 'master') {
@@ -28,6 +27,7 @@ git.isGit(__dirname, (exists) => {
             const featureBranch = result['branch'].match(/\/(.*)/);
             shell.exec(`git flow feature finish ${featureBranch[1]}`);
         }
+        shell.exec('git pull');
         release(argv.env);
     })
 });
