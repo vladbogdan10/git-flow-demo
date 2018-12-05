@@ -21,13 +21,13 @@ git.isGit(__dirname, (exists) => {
         } 
         if (result.dirty > 0) {
             console.log(`===> You have ${result.dirty} uncommitted changes. Please commit your changes first.`);
-            return;
+            // return;
         }
         if (result['branch'].includes('feature/')) {
             const featureBranch = result['branch'].match(/\/(.*)/);
             shell.exec(`git flow feature finish ${featureBranch[1]}`);
         }
-        release(argv.env);
+        // release(argv.env);
     })
 });
 
@@ -85,7 +85,7 @@ const release = (env) => {
                     console.log('this version number does not comply to semver format.');
                     console.log('package.json will not be updated.');
                 } else {
-                    shell.exec('git pull');
+                    const gitPull = shell.exec('git pull');
                     shell.exec(`git flow release start ${res.version}`);
                     // updates package.json
                     console.log(`sweet! package.json will be updated with the new version: ${res.version}`);
@@ -114,3 +114,8 @@ const release = (env) => {
         }
     });
 };
+
+const gitPull = shell.exec('git pull');
+console.log(gitPull.code);
+console.log(gitPull.stderr);
+console.log(gitPull.stdout);
