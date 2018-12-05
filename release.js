@@ -97,7 +97,7 @@ const release = (env) => {
                 // executes webpack binary in prod mode
                 // with environment variables that will be used by the config file
                 // shell.exec('webpack -p --config webpack.' + env.project + '.config.js --env.prod --env.version=' + res.version);
-                
+                shell.exec('git commit -am "version bumped"');
 
                 console.log('...Building files...');
                 if (lsRemoteTags() == res.version) {
@@ -105,7 +105,6 @@ const release = (env) => {
                     return;
                 }
                 
-                shell.exec('git commit -am "version bumped"');
                 
                 const release = shell.exec(`git flow release finish -m "release" ${res.version}`);
                 console.log('release', release.code);
