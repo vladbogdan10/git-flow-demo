@@ -21,7 +21,7 @@ git.isGit(__dirname, (exists) => {
             return;
         } 
         if (result.dirty > 0) {
-            console.log(` You have ${result.dirty} uncommitted changes. Please commit your changes first. `.black.bgWhite);
+            console.log(`You have ${result.dirty} uncommitted changes. Please commit your changes first.`.black.bgWhite);
             return;
         }
         if (result['branch'].includes('feature/')) {
@@ -36,7 +36,7 @@ const lsRemoteTags = () => {
     const gitTags = shell.exec(`git ls-remote --tags https://github.com/vladbogdan10/git-flow-demo.git`, {silent:true});
 	error = gitTags.stderr;
 	if (error) {
-		console.log(`There was a problem getting the git version from ${error}`);
+		console.log(`There was a problem getting the git version from ${error}`.black.bgRed);
 		return;
 	}
 	output = gitTags.stdout;
@@ -72,8 +72,8 @@ const release = (env) => {
     }], (err, res) => {
         if (res.updated === 'y') {
             // console.info('Creating', argv.env.project ,'Release Build...');
-            console.log(`Current version: ${lsRemoteTags()}`);
-            console.log('Please give a new version number');
+            console.log(`Current version: ${lsRemoteTags()}`.cyan);
+            console.log('Please give a new version number'.cyan);
 
             // prompts for a new version number
             prompt.get([{
