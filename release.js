@@ -109,7 +109,7 @@ const release = (env) => {
                 shell.exec(`git flow release finish -m "release" ${res.version}`);
                 shell.exec('git push --all --follow-tags');
 
-                console.log('Successful! Now let\'s hope you didn\'t brake anything :)'.black.bgGreen);
+                console.log('Successful! Now let\'s hope you didn\'t break anything :)'.black.bgGreen);
             });
         } else {
             console.log('Please update chip dependencies with "npm update" before continuing!\n'.black.bgMagenta);
