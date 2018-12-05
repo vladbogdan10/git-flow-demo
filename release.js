@@ -86,6 +86,8 @@ const release = (env) => {
                     console.log('package.json will not be updated.');
                 } else {
                     const gitPull = shell.exec('git pull');
+                    if (gitPull.code == 1) return;
+
                     shell.exec(`git flow release start ${res.version}`);
                     // updates package.json
                     console.log(`sweet! package.json will be updated with the new version: ${res.version}`);
@@ -116,10 +118,5 @@ const release = (env) => {
 };
 
 const gitPull = shell.exec('git pull');
-console.log(gitPull.code);
-console.log(gitPull.stderr);
-if (gitPull.code == 1) {
-    return
-}
-console.log('after error');
-
+if (gitPull.code == 1) return;
+console.log('after conflict');
