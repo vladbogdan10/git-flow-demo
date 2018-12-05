@@ -24,11 +24,11 @@ git.isGit(__dirname, (exists) => {
             console.log(`===> You have ${result.dirty} uncommitted changes. Please commit your changes first.`);
             // return;
         }
-        if (result['branch'].includes('feature')) {
+        if (result['branch'].includes('feature/')) {
             const featureBranch = result['branch'].match(/\/(.*)/);
             shell.exec(`git flow feature finish ${featureBranch[1]}`);
         }
-        // release(argv.env);
+        release(argv.env);
     })
 });
 
