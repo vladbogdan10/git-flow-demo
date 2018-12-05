@@ -22,7 +22,7 @@ git.isGit(__dirname, (exists) => {
         } 
         if (result.dirty > 0) {
             console.log(`You have ${result.dirty} uncommitted changes. Please commit your changes first.`.black.bgWhite);
-            return;
+            // return;
         }
         if (result['branch'].includes('feature/')) {
             const featureBranch = result['branch'].match(/\/(.*)/);
@@ -33,10 +33,10 @@ git.isGit(__dirname, (exists) => {
 });
 
 const lsRemoteTags = () => {
-    const gitTags = shell.exec(`git ls-remote --tags https://github.com/vladbogdan10/git-flow-demo.git`, {silent:true});
+    const gitTags = shell.exec(`git ls-remote --tags https://github.com/vladbogdan10/git-flow-dem`, {silent:true});
 	error = gitTags.stderr;
 	if (error) {
-		console.log(`There was a problem getting the git version from ${error}`.black.bgRed);
+		console.log(`There was a problem getting the git version from ${error} Please abort or check latest git tag manually.`.black.bgRed);
 		return;
 	}
 	output = gitTags.stdout;
