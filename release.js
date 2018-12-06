@@ -18,11 +18,11 @@ git.isGit(__dirname, (exists) => {
 
         if(!argv.dryrun) {
             if (result.branch === 'master') {
-                console.log(`You are on ${result['branch'].toUpperCase()} branch. Please switch to develop or feature branch in order to continue.\n`.black.bgWhite);
+                console.log(`You are on ${result['branch'].toUpperCase()} branch. Please switch to develop or feature branch in order to continue.`.black.bgWhite);
                 return;
             } 
             if (result.dirty > 0) {
-                console.log(`You have ${result.dirty} uncommitted changes. Please commit your changes first.\n`.black.bgWhite);
+                console.log(`You have ${result.dirty} uncommitted changes. Please commit your changes first.`.black.bgWhite);
                 return;
             }
             if (result['branch'].includes('feature/')) {
@@ -51,7 +51,7 @@ const lsRemoteTags = () => {
 
 const parseTags = tags => {
     const tagMap = new Map();
-    tags.split('\n')
+    tags.split('')
         .forEach((str) => {
             const ref = str.split(/\t/);
             tagMap.set(ref[1].split('/')[2].replace(/\^\{\}$/, ''), ref[0]);
@@ -65,7 +65,7 @@ const parseTags = tags => {
 const release = (env) => {
     // ask users to check chip dependencies are updated
     console.log('IMPORTANT');
-    console.log('Did you remember to run "npm update" to update chip dependencies?\n'.black.bgYellow);
+    console.log('Did you remember to run "npm update" to update chip dependencies?'.black.bgYellow);
 
     prompt.get([{
         name: 'updated',
@@ -108,7 +108,7 @@ const release = (env) => {
 
                 if (!argv.dryrun) {
                     if (lsRemoteTags() === res.version) {
-                        console.log('In the meantime the git tag was already taken. Please start the process again!\n'.black.bgRed);
+                        console.log('In the meantime the git tag was already taken. Please start the process again!'.black.bgRed);
                         return;
                     }
                     shell.exec('git commit -am "version bumped"');
@@ -116,10 +116,10 @@ const release = (env) => {
                     shell.exec('git push --all --follow-tags');
                 }
 
-                console.log('Successful! Now let\'s hope you didn\'t break anything :)\n'.black.bgGreen);
+                console.log('Successful! Now let\'s hope you didn\'t break anything :)'.black.bgGreen);
             });
         } else {
-            console.log('Please update chip dependencies with "npm update" before continuing!\n'.black.bgMagenta);
+            console.log('Please update chip dependencies with "npm update" before continuing!'.black.bgMagenta);
         }
     });
 };
