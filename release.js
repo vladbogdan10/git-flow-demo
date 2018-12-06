@@ -51,7 +51,7 @@ const lsRemoteTags = () => {
 
 const parseTags = tags => {
     const tagMap = new Map();
-    tags.split('')
+    tags.split('\n')
         .forEach((str) => {
             const ref = str.split(/\t/);
             tagMap.set(ref[1].split('/')[2].replace(/\^\{\}$/, ''), ref[0]);
