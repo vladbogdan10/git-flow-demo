@@ -22,7 +22,7 @@ git.isGit(__dirname, (exists) => {
         } 
         if (result.dirty > 0) {
             console.log(`You have ${result.dirty} uncommitted changes. Please commit your changes first.`.black.bgWhite);
-            return;
+            // return;
         }
         if (result['branch'].includes('feature/')) {
             const featureBranch = result['branch'].match(/\/(.*)/);
@@ -88,7 +88,9 @@ const release = (env) => {
                 } else {
                     const gitPull = shell.exec('git pull');
                     if (gitPull.code == 1) return;
-                    shell.exec(`git flow release start ${res.version}`);
+                    if (!argv.dryrun) {
+                        shell.exec(`git flow release start ${res.version}`);
+                    }
                     // updates package.json
                     pck.version = res.version;
                     fs.writeFileSync(path.join('.', 'package.json'), JSON.stringify(pck, null, 2));
@@ -101,13 +103,16 @@ const release = (env) => {
                 for (let i = 0; i <= 50; i++) {
                     console.log('Building files...');
                 }
-                if (lsRemoteTags() == res.version) {
-                    console.log('In the meantime the git tag was already taken. Please start the process again!'.black.bgRed);
-                    return;
+
+                if (!argv.dryrun) {
+                    if (lsRemoteTags() == res.version) {
+                        console.log('In the meantime the git tag was already taken. Please start the process again!'.black.bgRed);
+                        return;
+                    }
+                    shell.exec('git commit -am "version bumped"');
+                    shell.exec(`git flow release finish -m "release" ${res.version}`);
+                    shell.exec('git push --all --follow-tags');
                 }
-                shell.exec('git commit -am "version bumped"');
-                shell.exec(`git flow release finish -m "release" ${res.version}`);
-                shell.exec('git push --all --follow-tags');
 
                 console.log('Successful! Now let\'s hope you didn\'t break anything :)'.black.bgGreen);
             });
