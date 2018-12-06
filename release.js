@@ -11,12 +11,12 @@ const fs = require('fs'),
 
 
 git.isGit(__dirname, (exists) => {
-    if (!exists) return
+    if (!exists) return;
     
     git.check(__dirname, (err, result) => {
         if (err) console.log(err);
 
-        if(!argv.dryrun) {
+        if (!argv.dryrun) {
             if (result.branch === 'master') {
                 console.log(`You are on ${result['branch'].toUpperCase()} branch. Please switch to develop or feature branch in order to continue.`.black.bgWhite);
                 return;
@@ -44,9 +44,9 @@ const lsRemoteTags = () => {
 	let output = gitTags.stdout,
         strTags = output.toString().trim(),
         parsedTags = parseTags(strTags),
-        latesGitTag =  parsedTags.entries().next().value;
+        latestGitTag =  parsedTags.entries().next().value;
 	 
- 	return latesGitTag[0];
+ 	return latestGitTag[0];
 };
 
 const parseTags = tags => {
