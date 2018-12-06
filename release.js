@@ -15,21 +15,23 @@ git.isGit(__dirname, (exists) => {
     
     git.check(__dirname, (err, result) => {
         if (err) console.log(err);
-        
-        if (result.branch == 'master') {
-            console.log(`You are on ${result['branch'].toUpperCase()} branch. Please switch to develop or feature branch in order to continue.`.black.bgWhite);
-            return;
-        } 
-        if (result.dirty > 0) {
-            console.log(`You have ${result.dirty} uncommitted changes. Please commit your changes first.`.black.bgWhite);
-            // return;
-        }
-        if (result['branch'].includes('feature/')) {
-            const featureBranch = result['branch'].match(/\/(.*)/);
-            shell.exec(`git flow feature finish ${featureBranch[1]}`);
+
+        if(!argv.dryrun) {
+            if (result.branch == 'master') {
+                console.log(`You are on ${result['branch'].toUpperCase()} branch. Please switch to develop or feature branch in order to continue.`.black.bgWhite);
+                return;
+            } 
+            if (result.dirty > 0) {
+                console.log(`You have ${result.dirty} uncommitted changes. Please commit your changes first.`.black.bgWhite);
+                return;
+            }
+            if (result['branch'].includes('feature/')) {
+                const featureBranch = result['branch'].match(/\/(.*)/);
+                shell.exec(`git flow feature finish ${featureBranch[1]}`);
+            }
         }
         release(argv.env);
-    })
+    });
 });
 
 const lsRemoteTags = () => {
@@ -40,7 +42,7 @@ const lsRemoteTags = () => {
 		return;
 	}
 	output = gitTags.stdout;
-	strTags = output.toString().trim()
+	strTags = output.toString().trim();
 	parsedTags = parseTags(strTags);
 	latesGitTag =  parsedTags.entries().next().value;
 	 
@@ -86,9 +88,9 @@ const release = (env) => {
                     console.log('this version number does not comply to semver format.'.red);
                     console.log('package.json will not be updated.'.red);
                 } else {
-                    const gitPull = shell.exec('git pull');
-                    if (gitPull.code == 1) return;
                     if (!argv.dryrun) {
+                        const gitPull = shell.exec('git pull');
+                        if (gitPull.code == 1) return;
                         shell.exec(`git flow release start ${res.version}`);
                     }
                     // updates package.json
