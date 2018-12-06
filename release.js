@@ -17,7 +17,7 @@ git.isGit(__dirname, (exists) => {
         if (err) console.log(err);
 
         if(!argv.dryrun) {
-            if (result.branch == 'master') {
+            if (result.branch === 'master') {
                 console.log(`You are on ${result['branch'].toUpperCase()} branch. Please switch to develop or feature branch in order to continue.\n`.black.bgWhite);
                 return;
             } 
@@ -36,15 +36,15 @@ git.isGit(__dirname, (exists) => {
 
 const lsRemoteTags = () => {
     const gitTags = shell.exec(`git ls-remote --tags https://github.com/vladbogdan10/git-flow-demo.git`, {silent:true});
-	error = gitTags.stderr;
+	const error = gitTags.stderr;
 	if (error) {
 		console.log(`There was a problem getting the git version from ${error}Please abort(CTRL + C) or check latest git tag manually.`.black.bgRed);
 		return;
 	}
-	output = gitTags.stdout;
-	strTags = output.toString().trim();
-	parsedTags = parseTags(strTags);
-	latesGitTag =  parsedTags.entries().next().value;
+	let output = gitTags.stdout,
+        strTags = output.toString().trim(),
+        parsedTags = parseTags(strTags),
+        latesGitTag =  parsedTags.entries().next().value;
 	 
  	return latesGitTag[0];
 };
@@ -90,7 +90,7 @@ const release = (env) => {
                 } else {
                     if (!argv.dryrun) {
                         const gitPull = shell.exec('git pull');
-                        if (gitPull.code == 1) return;
+                        if (gitPull.code === 1) return;
                         shell.exec(`git flow release start ${res.version}`);
                     }
                     // updates package.json
@@ -107,7 +107,7 @@ const release = (env) => {
                 }
 
                 if (!argv.dryrun) {
-                    if (lsRemoteTags() == res.version) {
+                    if (lsRemoteTags() === res.version) {
                         console.log('In the meantime the git tag was already taken. Please start the process again!\n'.black.bgRed);
                         return;
                     }
