@@ -65,7 +65,7 @@ const parseTags = tags => {
 const release = (env) => {
     // ask users to check chip dependencies are updated
     console.log('IMPORTANT');
-    console.log('Did you remember to run "npm update" to update chip dependencies?\n'.black.bgYellow);
+    console.log('Did you remember to run "npm update" to update chip dependencies?'.black.bgYellow);
 
     prompt.get([{
         name: 'updated',
@@ -119,7 +119,7 @@ const release = (env) => {
                 console.log('Successful! Now let\'s hope you didn\'t break anything :)'.black.bgGreen);
             });
         } else {
-            console.log('Please update chip dependencies with "npm update" before continuing!\n'.black.bgMagenta);
+            console.log('Please update chip dependencies with "npm update" before continuing!'.black.bgMagenta);
         }
     });
 };
