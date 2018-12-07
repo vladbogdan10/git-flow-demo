@@ -30,7 +30,7 @@ git.isGit(__dirname, (exists) => {
                 shell.exec(`git flow feature finish ${featureBranch[1]}`);
             }
         }
-        release(argv.env);
+        this.release(argv.env);
     });
 });
 
@@ -62,7 +62,7 @@ const parseTags = tags => {
         .reverse());
 };
 
-const release = (env) => {
+this.release = (env) => {
     // ask users to check chip dependencies are updated
     console.log('IMPORTANT');
     console.log('Did you remember to run "npm update" to update chip dependencies?'.black.bgYellow);
@@ -72,7 +72,7 @@ const release = (env) => {
         description: '(Y/N)',
         required: true
     }], (err, res) => {
-        if (res.updated === 'y') {
+        if (res.updated.toLowerCase() === 'y') {
             // console.info('Creating', argv.env.project ,'Release Build...');
             console.log(`Current version: ${lsRemoteTags()}`.cyan);
             console.log('Please give a new version number'.cyan);
