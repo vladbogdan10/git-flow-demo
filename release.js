@@ -93,10 +93,10 @@ const release = (env) => {
                                 const featureBranch = result['branch'].match(/\/(.*)/);
                                 shell.exec(`git flow feature finish ${featureBranch[1]}`);
                             }
-                            const gitPull = shell.exec('git pull');
-                            if (gitPull.code === 1) return;
-                            shell.exec(`git flow release start ${res.version}`);
                         });
+                        const gitPull = shell.exec('git pull');
+                        if (gitPull.code === 1) return;
+                        shell.exec(`git flow release start ${res.version}`);
                     }
                     // updates package.json
                     pck.version = res.version;
