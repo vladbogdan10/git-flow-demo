@@ -24,10 +24,10 @@ git.isGit(__dirname, (exists) => {
                 console.log(`You have ${result.dirty} uncommitted changes. Please commit your changes first.`.black.bgWhite);
                 return;
             }
-            // if (result['branch'].includes('feature/')) {
-            //     const featureBranch = result['branch'].match(/\/(.*)/);
-            //     shell.exec(`git flow feature finish ${featureBranch[1]}`);
-            // }
+            if (result['branch'].includes('feature/')) {
+                const featureBranch = result['branch'].match(/\/(.*)/);
+                shell.exec(`git flow feature finish ${featureBranch[1]}`);
+            }
         }
         release(argv.env);
     });
@@ -88,12 +88,6 @@ const release = (env) => {
                     console.log('package.json will not be updated.'.red);
                 } else {
                     if (!argv.dryrun) {
-                        git.check(__dirname, (err, result) => {
-                            if (result['branch'].includes('feature/')) {
-                                const featureBranch = result['branch'].match(/\/(.*)/);
-                                shell.exec(`git flow feature finish ${featureBranch[1]}`);
-                            }
-                        });
                         const gitPull = shell.exec('git pull');
                         if (gitPull.code === 1) return;
                         shell.exec(`git flow release start ${res.version}`);
