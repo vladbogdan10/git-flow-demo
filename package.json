@@ -1,6 +1,6 @@
 {
   "name": "git-flow-demo",
-  "version": "1.1.9",
+  "version": "1.1.10",
   "description": "Learning git-flow",
   "main": "index.js",
   "scripts": {
