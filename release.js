@@ -15,11 +15,12 @@ git.isGit(__dirname, (exists) => {
     git.check(__dirname, (err, result) => {
         if (err) console.log(err);
 
-        if (!argv.dryrun) {
-            if (result.branch === 'master') {
-                console.log(`You are on ${result['branch'].toUpperCase()} branch. Please switch to develop or feature branch in order to continue.`.black.bgWhite);
-                return;
-            } 
+        if (result.branch === 'master') {
+            console.log(`You are on ${result['branch'].toUpperCase()} branch. Please switch to develop or feature branch in order to continue.`.black.bgWhite);
+            return;
+        }
+
+        if (!argv.dryrun) { 
             if (result.dirty > 0) {
                 console.log(`You have ${result.dirty} uncommitted changes. Please commit your changes first.`.black.bgWhite);
                 return;
