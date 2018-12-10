@@ -6,7 +6,7 @@ const fs = require('fs'),
       pck = require('./package.json'),
       git = require('git-state'),
       colors = require('colors'),
-      argv = require('yargs').argv;
+      argv = require('yargs').argv; 
 
 
 git.isGit(__dirname, (exists) => {
