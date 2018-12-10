@@ -91,32 +91,32 @@ this.release = (env) => {
                     if (!argv.dryrun) {
                         const gitPull = shell.exec('git pull');
                         if (gitPull.code === 1) return;
-                        shell.exec(`git flow release start ${res.version}`);
                     }
                     // updates package.json
                     pck.version = res.version;
                     fs.writeFileSync(path.join('.', 'package.json'), JSON.stringify(pck, null, 2));
+
+                    for (let i = 0; i <= 50; i++) {
+                        console.log('Building files...');
+                    }
+    
+                    if (!argv.dryrun) {
+                        if (lsRemoteTags() === res.version) {
+                            console.log('In the meantime the git tag was already taken. Please start the process again!'.black.bgRed);
+                            return;
+                        }
+                        shell.exec('git commit -am "version bumped"');
+                        shell.exec(`git flow release start ${res.version}`);
+                        shell.exec(`git flow release finish -m "release" ${res.version}`);
+                        shell.exec('git push --all --follow-tags');
+                    }
+                    console.log('Successful! Now let\'s hope you didn\'t break anything :)'.black.bgGreen);
                 }
                 
                 // executes webpack binary in prod mode
                 // with environment variables that will be used by the config file
                 // shell.exec('webpack -p --config webpack.' + env.project + '.config.js --env.prod --env.version=' + res.version);
                 
-                for (let i = 0; i <= 50; i++) {
-                    console.log('Building files...');
-                }
-
-                if (!argv.dryrun) {
-                    if (lsRemoteTags() === res.version) {
-                        console.log('In the meantime the git tag was already taken. Please start the process again!'.black.bgRed);
-                        return;
-                    }
-                    shell.exec('git commit -am "version bumped"');
-                    shell.exec(`git flow release finish -m "release" ${res.version}`);
-                    shell.exec('git push --all --follow-tags');
-                }
-
-                console.log('Successful! Now let\'s hope you didn\'t break anything :)'.black.bgGreen);
             });
         } else {
             console.log('Please update chip dependencies with "npm update" before continuing!'.black.bgMagenta);
