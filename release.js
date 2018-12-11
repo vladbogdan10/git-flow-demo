@@ -48,41 +48,34 @@ this.release = (env) => {
                 if (!semver.valid(res.version)) {
                     console.log('this version number does not comply to semver format.'.red);
                     console.log('package.json will not be updated.'.red);
-                } else {
-                    if (!argv.dryrun) {
-                        const gitPull = shell.exec('git pull');
-                        if (gitPull.code === 1) return;
-                        const releaseBranch = shell.exec(`git flow release start ${res.version}`);
-                        if (releaseBranch.code === 1) return;
-                    }
-                    // executes webpack binary in prod mode
-                    // with environment variables that will be used by the config file
-                    // const buildFiles = shell.exec('node build.js --color=true --env.prod --env.version=' + res.version + ' --env.project=' + env.project);
-                    // if (buildFiles.code === 1) {
-                    //     shell.exec('git checkout develop');
-                    //     shell.exec(`git branch --delete release/${res.version}`);
-                    //     return;
-                    // }
-
-                    for (let i = 0; i <= 50; i++) {
-                        console.log('Building files...');
-                    }
-
-                    pck.version = res.version;
-                    fs.writeFileSync(path.join('.', 'package.json'), JSON.stringify(pck, null, 2));
-                    console.log('sweet! package.json was updated with the new version: ' + res.version);
-
-                    if (!argv.dryrun) {
-                        if (lsRemoteTags() === res.version) {
-                            console.log('In the meantime the git tag was already taken. Please start the process again!'.black.bgRed);
-                            return;
-                        }
-                        shell.exec('git commit -am "version bumped"');
-                        shell.exec(`git flow release finish -m "release" ${res.version}`);
-                        shell.exec('git push --all --follow-tags');
-                    }
-                    console.log('Successful!'.black.bgGreen);
+                    return;
                 }
+
+                if (!argv.dryrun) {
+                    const gitPull = shell.exec('git pull');
+                    if (gitPull.code === 1) return;
+                    const releaseBranch = shell.exec(`git flow release start ${res.version}`);
+                    if (releaseBranch.code === 1) return;
+                }
+
+                for (let i = 0; i <= 50; i++) {
+                    console.log('Building files...');
+                }
+
+                pck.version = res.version;
+                fs.writeFileSync(path.join('.', 'package.json'), JSON.stringify(pck, null, 2));
+                console.log('sweet! package.json was updated with the new version: ' + res.version);
+
+                if (!argv.dryrun) {
+                    if (lsRemoteTags() === res.version) {
+                        console.log('In the meantime the git tag was already taken. Please start the process again!'.black.bgRed);
+                        return;
+                    }
+                    shell.exec('git commit -am "version bumped"');
+                    shell.exec(`git flow release finish -m "release" ${res.version}`);
+                    shell.exec('git push --all --follow-tags');
+                }
+                console.log('Successful!'.black.bgGreen);
             });
         } else {
             console.log('Please update chip dependencies with "npm update" before continuing!'.black.bgMagenta);
