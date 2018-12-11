@@ -35,31 +35,17 @@ git.isGit(__dirname, (exists) => {
 });
 
 const lsRemoteTags = () => {
-    const gitTags = shell.exec(`git ls-remote --tags https://github.com/vladbogdan10/git-flow-demo.git`, {silent:true});
+    const repositoryLink = 'https://github.com/vladbogdan10/git-flow-demo.git';
+	const gitTags = shell.exec(`git ls-remote --tags --refs --sort=-v:refname ${repositoryLink}`, {silent:true});
 	const error = gitTags.stderr;
 	if (error) {
-		console.log(`There was a problem getting the git version from ${error}Please abort(CTRL + C) or check latest git tag manually.`.black.bgRed);
+		console.log(`There was a problem getting the git version from ${error}Please abort(CTRL + C) or check latest git tag manually.`);
 		return;
-	}
-	let output = gitTags.stdout,
-        strTags = output.toString().trim(),
-        parsedTags = parseTags(strTags),
-        latestGitTag =  parsedTags.entries().next().value;
-	 
- 	return latestGitTag[0];
-};
+    }
+    let latestRefTag = gitTags.stdout.split('\n')[0],
+        latestTag = latestRefTag.match(/(?:\d+\.?){3}$/);
 
-const parseTags = tags => {
-    const tagMap = new Map();
-    tags.split('\n')
-        .forEach((str) => {
-            const ref = str.split(/\t/);
-            tagMap.set(ref[1].split('/')[2].replace(/\^\{\}$/, ''), ref[0]);
-        });
-    return new Map([...tagMap.entries()]
-        .filter(arr => semver.valid(arr[0]))
-        .sort((a, b) => semver.compare(a[0], b[0]))
-        .reverse());
+    return latestTag[0];
 };
 
 this.release = (env) => {
