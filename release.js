@@ -50,9 +50,10 @@ this.release = (env) => {
                     console.log('package.json will not be updated.'.red);
                 } else {
                     if (!argv.dryrun) {
-                        const gitPull = shell.exec('git pull'),
-                              releaseBranch = shell.exec(`git flow release start ${res.version}`);
-                        if (gitPull.code === 1 || releaseBranch.code === 1) return;
+                        const gitPull = shell.exec('git pull');
+                        if (gitPull.code === 1) return;
+                        const releaseBranch = shell.exec(`git flow release start ${res.version}`);
+                        if (releaseBranch.code === 1) return;
                     }
                     // executes webpack binary in prod mode
                     // with environment variables that will be used by the config file
@@ -80,7 +81,7 @@ this.release = (env) => {
                         shell.exec(`git flow release finish -m "release" ${res.version}`);
                         shell.exec('git push --all --follow-tags');
                     }
-                    console.log('Successful! Now let\'s hope you didn\'t break anything :)'.black.bgGreen);
+                    console.log('Successful!'.black.bgGreen);
                 }
             });
         } else {
