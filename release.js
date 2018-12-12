@@ -33,8 +33,7 @@ this.release = (env) => {
         description: '(Y/N)',
         required: true
     }], (err, res) => {
-        if (res.updated.toLowerCase() === 'y') {
-            // console.info('Creating', argv.env.project ,'Release Build...');
+            if (res.updated.toLowerCase() === 'y') {
             console.log(`Current version: ${lsRemoteTags()}`.cyan);
             console.log('Please give a new version number'.cyan);
 
@@ -58,6 +57,7 @@ this.release = (env) => {
                     if (releaseBranch.code === 1) return;
                 }
 
+                // Simulate building files
                 for (let i = 0; i <= 50; i++) {
                     console.log('Building files...');
                 }
